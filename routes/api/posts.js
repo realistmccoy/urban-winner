@@ -128,6 +128,7 @@ router.post(
       Post.findById(req.params.id)
         .then(post => {
           if (
+            // this check if the user has already liked a post
             post.likes.filter(like => like.user.toString() === req.user.id)
               .length === 0
           ) {
