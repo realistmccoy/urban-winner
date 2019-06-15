@@ -11,7 +11,7 @@ const posts = require("./routes/api/posts");
 const app = express();
 
 //Body parser middleware @this is to request req.body.email ex.
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 //DB CONFIG
