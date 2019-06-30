@@ -1,54 +1,53 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route , Switch} from "react-router-dom";
-import jwt_decode from 'jwt-decode'
-import setAuthToken from './utils/setAuthToken'
-import {setCurrentUser, logoutUser} from './actions/authActions'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import setAuthToken from './utils/setAuthToken';
+import { setCurrentUser, logoutUser } from './actions/authActions';
+import { clearCurrentProfile } from './actions/profileActions';
 
-
-
-import { Provider } from "react-redux";
-import store from "./store";
+import { Provider } from 'react-redux';
+import store from './store';
 
 import PrivateRoute from './components/common/PrivateRoute';
 
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import Landing from "./components/layout/Landing";
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
-import Dashboard from "./components/dashboard/Dashboard";
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import Landing from './components/layout/Landing';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/create-profile/CreateProfile';
-import EditProfile from './components/edit-profile/EditProfile'
-import AddExperience from './components/add-credentials/AddExperience'
-import AddEducation from "./components/add-credentials/AddEducation";
+import EditProfile from './components/edit-profile/EditProfile';
+import AddExperience from './components/add-credentials/AddExperience';
+import AddEducation from './components/add-credentials/AddEducation';
+import Profiles from './components/profiles/Profiles';
+import Profile from './components/profile/Profile';
+import Posts from './components/posts/Posts';
+import Post from './components/post/Post';
+import NotFound from './components/not-found/NotFound';
 
-import "./App.css";
-import { clearCurrentProfile } from "./actions/profileActions";
+import './App.css';
 
-
-// check for token
-
-if(localStorage.jwtToken) {
-  //set auth token header auth
+// Check for token
+if (localStorage.jwtToken) {
+  // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
-  // decode the token and get user info and exp
+  // Decode token and get user info and exp
   const decoded = jwt_decode(localStorage.jwtToken);
-  // Calling the set user and isAuthenticated from /authActions // with store.dispatch() we can call any action
-  store.dispatch(setCurrentUser(decoded)); 
+  // Set user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
 
-  //check for expired token
+  // Check for expired token
   const currentTime = Date.now() / 1000;
-  if(decoded.exp < currentTime) {
-    //logout user
+  if (decoded.exp < currentTime) {
+    // Logout user
     store.dispatch(logoutUser());
-    //clear current profile
+    // Clear current Profile
     store.dispatch(clearCurrentProfile());
-    //redirect to login
-    window.location.href = '/login'
+    // Redirect to login
+    window.location.href = '/login';
   }
 }
-
-
 
 class App extends Component {
   render() {
@@ -59,48 +58,48 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
-              <Route exact path="/Register" component={Register} />
-              <Route exact path="/Login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/profiles" component={Profiles} />
+              <Route exact path="/profile/:handle" component={Profile} />
               <Switch>
-                < PrivateRoute exact path = "/Dashboard"
-                component = {
-                  Dashboard
-                }
-                />
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
               </Switch>
-                 <Switch>
+              <Switch>
                 <PrivateRoute
                   exact
                   path="/create-profile"
                   component={CreateProfile}
                 />
               </Switch>
-
-                   <Switch>
+              <Switch>
                 <PrivateRoute
                   exact
                   path="/edit-profile"
                   component={EditProfile}
                 />
               </Switch>
-
-                 <Switch>
+              <Switch>
                 <PrivateRoute
                   exact
                   path="/add-experience"
                   component={AddExperience}
                 />
               </Switch>
-
-              
-                 <Switch>
+              <Switch>
                 <PrivateRoute
                   exact
                   path="/add-education"
                   component={AddEducation}
                 />
               </Switch>
-              
+              <Switch>
+                <PrivateRoute exact path="/feed" component={Posts} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/post/:id" component={Post} />
+              </Switch>
+              <Route exact path="/not-found" component={NotFound} />
             </div>
             <Footer />
           </div>

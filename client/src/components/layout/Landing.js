@@ -21,8 +21,7 @@ class Landing extends Component {
                 <h1 className="display-3 mb-4">Qubit</h1>
                 <p className="lead">
                   {" "}
-                  Create portfolio, share posts and get help from
-                  other developers
+                  Create portfolio, share posts and get help from professionals
                 </p>
                 <hr />
                 <Link to="/register" className="btn btn-lg btn-info mr-2">
